@@ -15,10 +15,11 @@ public class PickupItem : MonoBehaviour
 
     private Vector3 startPosition;
 
-
+    private SimpleInventory inventory;
     private void Awake()
     {
-        questManager = FindObjectOfType<QuestManager>();
+        questManager = FindFirstObjectByType<QuestManager>();
+        inventory = FindFirstObjectByType<SimpleInventory>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -48,6 +49,30 @@ public class PickupItem : MonoBehaviour
     public string GetItemName()
     {
         return itemName;
+    }
+
+
+
+    public void Copilot()
+    {
+        if (inventory == null)
+        {
+            Debug.Log("SimpleInventory를 찾을 수 없습니다.");
+            return;
+        }
+
+        if (inventory.AddItem(itemName, amount) == false)
+        {
+            return;
+        }
+
+        Debug.Log(itemName + " " + amount + "개 획득");
+
+        if (questManager != null)
+        {
+            questManager.AddQuestItem(itemName, amount);
+        }
+        Destroy(gameObject);
     }
 
 }
