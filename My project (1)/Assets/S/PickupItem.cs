@@ -8,6 +8,10 @@ public class PickupItem : MonoBehaviour
 
     [SerializeField] private QuestManager questManager;
 
+    [TextArea]
+    [SerializeField] private string description = "아이템 설명이 없습니다.";
+
+
     [Header("화면 연출")]
     [SerializeField] private float rotationSpeed = 60f;
     [SerializeField] private float floatingHeight = 0.15f;
@@ -61,7 +65,7 @@ public class PickupItem : MonoBehaviour
             return;
         }
 
-        if (inventory.AddItem(itemName, amount) == false)
+        if (inventory.AddItem(itemName, amount, description) == false)
         {
             return;
         }

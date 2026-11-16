@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -137,4 +138,8 @@ public class PlayerController : MonoBehaviour
         return currentState == PlayerState.Normal;
     }
 
+    internal bool IsNormalState()
+    {
+        throw new NotImplementedException();
+    }
 }
