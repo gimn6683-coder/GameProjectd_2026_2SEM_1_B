@@ -27,6 +27,7 @@ public class SimpleInventory : MonoBehaviour
 
     private List<InventoryItem> items = new List<InventoryItem>();
 
+    private AchievementManager achievementManager;
     private PlayerController playerController;
     private PlayerPickup playerPickup;
     private ThirdPersonCamera thirdPersonCamera;
@@ -36,6 +37,7 @@ public class SimpleInventory : MonoBehaviour
 
     private void Awake()
     {
+        achievementManager = FindFirstObjectByType<AchievementManager>();
         playerController = GetComponent<PlayerController>();
         playerPickup = GetComponent<PlayerPickup>();
 
@@ -231,22 +233,36 @@ public class SimpleInventory : MonoBehaviour
         }
 
         playerHealth.Heal(healAmount);
+
+        if (achievementManager != null)
+        {
+            achievementManager.ItemUsed(item.itemName);
+
+        }
+
         RemoveItem(item.itemName, 1);
     }
 
     public void DropSelectedItem()
     {
-
         if (selectedIndex < 0 || selectedIndex >= items.Count) return;
 
         string itemName = items[selectedIndex].itemName;
 
-        RemoveItem(itemName, 1);
-
-
+        if (RemoveItem(itemName, 1))
+        {
+            if (achievementManager != null)
+            {
+                achievementManager.ItemDropped();
+            }
+        }
     }
 
-    public int GetItemAmount(string itemName) //인벤토리...
+
+
+
+
+    public int GetItemAmount(string itemName)
     {
         foreach (InventoryItem item in items)
         {
